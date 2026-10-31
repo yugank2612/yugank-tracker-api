@@ -26,30 +26,64 @@ function createResponse() {
   };
 }
 
-test("GET returns a synthetic demo response", () => {
+test("GET returns the expected demo response", () => {
   const req = { method: "GET" };
   const res = createResponse();
 
   handler(req, res);
 
   assert.equal(res.statusCode, 200);
-  assert.equal(res.body.success, true);
-  assert.equal(res.body.isDemo, true);
-  assert.equal(res.body.mode, "demo");
 
-  assert.equal(res.body.location.latitude, null);
-  assert.equal(res.body.location.longitude, null);
+  assert.deepEqual(res.body, {
+    success: true,
+    project: "Yugank Tracker",
+    mode: "demo",
+    isDemo: true,
 
-  assert.equal(res.headers["cache-control"], "no-store");
+    vehicle: {
+      id: "demo-vehicle-001",
+      name: "Demo Vehicle"
+    },
+
+    location: {
+      latitude: null,
+      longitude: null
+    },
+
+    telemetry: {
+      speedKph: null
+    },
+
+    recordedAt: null,
+
+    message:
+      "Sample data only. No real GPS device is connected."
+  });
 });
 
-test("Unsupported methods return HTTP 405", () => {
-  const req = { method: "POST" };
+test("GET response disables caching", () => {
+  const req = { method: "GET" };
   const res = createResponse();
 
   handler(req, res);
 
-  assert.equal(res.statusCode, 405);
-  assert.equal(res.headers.allow, "GET");
-  assert.equal(res.body.success, false);
+  assert.equal(
+    res.headers["cache-control"],
+    "no-store"
+  );
+});
+
+test("Unsupported HTTP methods return 405", () => {
+  const methods = ["POST", "PUT", "DELETE"];
+
+  for (const method of methods) {
+    const req = { method };
+    const res = createResponse();
+
+    handler(req, res);
+
+    assert.equal(res.statusCode, 405);
+    assert.equal(res.headers.allow, "GET");
+    assert.equal(res.body.success, false);
+  }
 });
