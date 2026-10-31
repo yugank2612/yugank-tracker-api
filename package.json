@@ -1,0 +1,10 @@
+
+{
+  "name": "yugank-tracker-api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Learning-stage vehicle tracking API prototype using synthetic demo data.",
+  "scripts": {
+    "test": "node --test"
+  }
+}
