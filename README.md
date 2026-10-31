@@ -1,6 +1,3 @@
-# yugank-tracker-api
-Real-time vehicle tracking backend for Yugank Tracker. Vercel serverless API.
-
 # Yugank Tracker API
 
 A learning-stage backend prototype for **Yugank Tracker**, focused on building a structured and secure vehicle-tracking API.
