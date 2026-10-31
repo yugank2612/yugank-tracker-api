@@ -1,0 +1,32 @@
+
+name: Yugank Tracker API Tests
+
+on:
+  push:
+    branches:
+      - main
+      - demo-prototype
+
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Run API Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24.x'
+
+      - name: Run automated tests
+        run: npm test
