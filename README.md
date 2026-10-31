@@ -60,24 +60,39 @@ The current prototype provides a simple HTTP endpoint with a clearly labelled de
 
 ## Project Structure
 
+
+## Project Structure
+
 ```text
 yugank-tracker-api/
+│
+├── .github/
+│   └── workflows/
+│       └── api-tests.yml
 │
 ├── api/
 │   └── location.js
 │
-├── README.md
-└── TRACKER2.0.HTML
+├── archive/
+│   └── TRACKER2.0.legacy.js
+│
+├── tests/
+│   └── location.test.js
+│
+├── .gitignore
+├── package.json
+└── README.md
 ```
 
-`TRACKER2.0.HTML` is an older draft that has not yet been reviewed or integrated into the current demo API.
+The `archive/` directory contains an older, unintegrated API draft. It is retained for reference and is not part of the active demo endpoint.
 
 ## Development Roadmap
 
 - [x] Create the initial repository
 - [x] Add the demo API endpoint
 - [x] Improve project documentation
-- [ ] Add API validation and automated tests
+- [x] Add basic automated API tests
+- [ ] Add API input validation
 - [ ] Select an authorised GPS data provider
 - [ ] Design authentication and access controls
 - [ ] Develop dashboard integration
