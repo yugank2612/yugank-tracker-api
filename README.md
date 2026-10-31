@@ -60,9 +60,6 @@ The current prototype provides a simple HTTP endpoint with a clearly labelled de
 
 ## Project Structure
 
-
-## Project Structure
-
 ```text
 yugank-tracker-api/
 │
