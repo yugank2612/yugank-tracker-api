@@ -10,7 +10,7 @@
 
 | Resource | Link |
 |---|---|
-| Dashboard Preview | [Open Dashboard](https://yugank-tracker-api-git-frontend-dashboard-yugank3.vercel.app/) |
+| Dashboard Preview | [Open Dashboard](https://yugank-tracker-api.vercel.app/) |
 | Production API | [GET /api/location](https://yugank-tracker-api.vercel.app/api/location) |
 | GitHub Repository | [yugank2612/yugank-tracker-api](https://github.com/yugank2612/yugank-tracker-api) |
 
