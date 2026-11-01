@@ -570,6 +570,164 @@
   }
 }
 
+/* Vehicle Management System */
+
+.vm-section {
+  margin-top: 28px;
+}
+
+.vm-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 17px;
+}
+
+.vm-heading h2 {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.vm-heading p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.vm-form {
+  margin-bottom: 20px;
+}
+
+.vm-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.vm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.vm-field label {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.vm-input {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #080d18;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+}
+
+.vm-input:focus {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+}
+
+.vm-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.vm-btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 16px;
+  background: var(--blue);
+  color: white;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.vm-btn:hover {
+  filter: brightness(1.1);
+}
+
+.vm-search {
+  margin-bottom: 15px;
+}
+
+.vm-list {
+  display: grid;
+  gap: 12px;
+}
+
+.vm-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto auto;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--panel);
+}
+
+.vm-item-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.vm-item-value {
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.vm-status {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 5px 9px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.vm-status.active {
+  background: rgba(54, 211, 153, 0.12);
+  color: var(--green);
+}
+
+.vm-status.inactive {
+  background: rgba(251, 113, 133, 0.12);
+  color: var(--red);
+}
+
+.vm-empty {
+  padding: 20px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+}
+
+@media (max-width: 650px) {
+  .vm-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vm-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .vm-row .vm-actions {
+    grid-column: 1 / -1;
+  }
+}
+
     /* Mobile responsive */
 
     @media (max-width: 950px) {
@@ -657,6 +815,9 @@
     <nav class="nav-links">
       <a class="nav-item active" href="#overview">Dashboard</a>
       <a class="nav-item" href="#vehicle">Vehicle</a>
+      <a class="nav-item" href="#vehicle-management">
+  Manage Vehicles
+</a>
       <a class="nav-item" href="#trips">Trips</a>
       <a class="nav-item" href="#location">Location</a>
       <a class="nav-item" href="#api">API Status</a>
@@ -768,6 +929,81 @@
       </article>
 
     </section>
+
+<section class="vm-section" id="vehicle-management">
+
+  <div class="vm-heading">
+    <div>
+      <h2>Vehicle Management</h2>
+      <p>Manage your demo vehicle inventory</p>
+    </div>
+    <div class="demo-badge">DEMO INVENTORY</div>
+  </div>
+
+  <form class="card vm-form" id="vehicleForm">
+    <h3 class="section-heading">Add New Vehicle</h3>
+
+    <div class="vm-form-grid">
+      <div class="vm-field">
+        <label for="newVehicleName">Vehicle Name</label>
+        <input class="vm-input" id="newVehicleName"
+          type="text" placeholder="Enter vehicle name"
+          maxlength="50" required>
+      </div>
+
+      <div class="vm-field">
+        <label for="newVehicleId">Vehicle ID</label>
+        <input class="vm-input" id="newVehicleId"
+          type="text" placeholder="Example: DEMO-004"
+          maxlength="30" required>
+      </div>
+
+      <div class="vm-field">
+        <label for="newVehicleType">Vehicle Type</label>
+        <select class="vm-input" id="newVehicleType" required>
+          <option value="Car">Car</option>
+          <option value="Bike">Bike</option>
+          <option value="Van">Van</option>
+          <option value="Truck">Truck</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="vm-actions">
+      <button class="vm-btn" type="submit">
+        + Add Vehicle
+      </button>
+      <span id="vehicleFormMessage"
+        role="status" aria-live="polite"></span>
+    </div>
+  </form>
+
+  <article class="card">
+    <div class="vm-heading">
+      <div>
+        <h3>Registered Vehicles</h3>
+        <p>Search and manage sample vehicles</p>
+      </div>
+    </div>
+
+    <input
+      class="vm-input vm-search"
+      id="vehicleSearch"
+      type="search"
+      placeholder="Search by vehicle name or ID..."
+      aria-label="Search vehicles">
+
+    <div class="vm-list" id="vehicleList"
+      aria-live="polite">
+    </div>
+
+    <p class="trip-demo-note">
+      Demo inventory only. Changes are kept in this page session
+      and are not saved to a real database.
+    </p>
+  </article>
+
+</section>
 
 <section class="analytics-section" id="analytics">
 
@@ -1125,6 +1361,199 @@
 
     }
   }
+
+/* Vehicle Management functionality */
+
+(() => {
+  const form = $("vehicleForm");
+  const list = $("vehicleList");
+  const search = $("vehicleSearch");
+  const message = $("vehicleFormMessage");
+
+  if (!form || !list || !search || !message) return;
+
+  // Illustrative vehicles; stored only in page memory.
+  const vehicles = [
+    {
+      id: "DEMO-001",
+      name: "Demo Vehicle",
+      type: "Car",
+      status: "Active"
+    },
+    {
+      id: "DEMO-002",
+      name: "City Runner",
+      type: "Bike",
+      status: "Active"
+    },
+    {
+      id: "DEMO-003",
+      name: "Cargo Van",
+      type: "Van",
+      status: "Inactive"
+    }
+  ];
+
+  function createElement(tag, className, value) {
+    const element = document.createElement(tag);
+    element.className = className;
+    element.textContent = value;
+    return element;
+  }
+
+  function addCell(row, label, value) {
+    const cell = createElement("div", "vm-cell", "");
+    cell.appendChild(
+      createElement("span", "vm-item-label", label)
+    );
+    cell.appendChild(
+      createElement("span", "vm-item-value", value)
+    );
+    row.appendChild(cell);
+  }
+
+  function renderVehicles() {
+    const query = search.value.trim().toLowerCase();
+
+    const filtered = vehicles.filter(vehicle =>
+      vehicle.name.toLowerCase().includes(query) ||
+      vehicle.id.toLowerCase().includes(query) ||
+      vehicle.type.toLowerCase().includes(query)
+    );
+
+    list.replaceChildren();
+
+    if (filtered.length === 0) {
+      list.appendChild(
+        createElement(
+          "div",
+          "vm-empty",
+          "No matching vehicles found."
+        )
+      );
+      return;
+    }
+
+    filtered.forEach(vehicle => {
+      const row = createElement("div", "vm-row", "");
+
+      addCell(row, "VEHICLE NAME", vehicle.name);
+      addCell(row, "VEHICLE ID", vehicle.id);
+      addCell(row, "TYPE", vehicle.type);
+
+      const statusCell = createElement("div", "vm-cell", "");
+      statusCell.appendChild(
+        createElement("span", "vm-item-label", "STATUS")
+      );
+
+      const badge = createElement(
+        "span",
+        "vm-status " + vehicle.status.toLowerCase(),
+        vehicle.status
+      );
+
+      statusCell.appendChild(badge);
+      row.appendChild(statusCell);
+
+      const actions = createElement("div", "vm-actions", "");
+      actions.style.marginTop = "0";
+
+      const toggleButton = createElement(
+        "button",
+        "vm-btn",
+        vehicle.status === "Active"
+          ? "Set Inactive"
+          : "Set Active"
+      );
+
+      toggleButton.type = "button";
+      toggleButton.dataset.action = "toggle";
+      toggleButton.dataset.vehicleId = vehicle.id;
+
+      const removeButton = createElement(
+        "button",
+        "vm-btn",
+        "Remove"
+      );
+
+      removeButton.type = "button";
+      removeButton.dataset.action = "remove";
+      removeButton.dataset.vehicleId = vehicle.id;
+
+      actions.append(toggleButton, removeButton);
+      row.appendChild(actions);
+      list.appendChild(row);
+    });
+  }
+
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const name = $("newVehicleName").value.trim();
+    const id = $("newVehicleId").value.trim().toUpperCase();
+    const type = $("newVehicleType").value;
+
+    if (!name || !id || !type) {
+      message.textContent = "Please complete all fields.";
+      return;
+    }
+
+    const duplicate = vehicles.some(
+      vehicle => vehicle.id.toLowerCase() === id.toLowerCase()
+    );
+
+    if (duplicate) {
+      message.textContent = "This Vehicle ID already exists.";
+      return;
+    }
+
+    vehicles.unshift({
+      id,
+      name,
+      type,
+      status: "Active"
+    });
+
+    form.reset();
+    message.textContent = name + " added successfully.";
+    renderVehicles();
+  });
+
+  search.addEventListener("input", renderVehicles);
+
+  list.addEventListener("click", event => {
+    const target = event.target;
+
+    if (!(target instanceof Element)) return;
+
+    const button = target.closest("button[data-action]");
+
+    if (!button || !list.contains(button)) return;
+
+    const id = button.dataset.vehicleId;
+
+    const index = vehicles.findIndex(
+      vehicle => vehicle.id === id
+    );
+
+    if (index === -1) return;
+
+    if (button.dataset.action === "toggle") {
+      vehicles[index].status =
+        vehicles[index].status === "Active"
+          ? "Inactive"
+          : "Active";
+    }
+
+    if (button.dataset.action === "remove") {
+      vehicles.splice(index, 1);
+    }
+
+    renderVehicles();
+  });
+
+  renderVehicles();
+})();
 
   // Load API data when the dashboard opens.
 
