@@ -1,0 +1,733 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080d18">
+
+  <title>Yugank Tracker | Vehicle Dashboard</title>
+
+  <meta name="description"
+    content="Yugank Tracker - a vehicle tracking dashboard prototype with a live demo API.">
+
+  <style>
+    :root {
+      --bg: #080d18;
+      --panel: #101a2c;
+      --panel-light: #14223a;
+      --border: #24334c;
+      --blue: #398bfa;
+      --text: #f1f5fb;
+      --muted: #94a3b8;
+      --green: #36d399;
+      --red: #fb7185;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, Arial, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .layout {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* Sidebar */
+
+    .sidebar {
+      width: 245px;
+      flex-shrink: 0;
+      padding: 28px 19px;
+      background: #0c1423;
+      border-right: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1675ee, #122b52);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .brand h2 {
+      font-size: 16px;
+      letter-spacing: 1px;
+    }
+
+    .brand p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .nav-label {
+      color: #64748b;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      margin: 24px 10px 12px;
+    }
+
+    .nav-item {
+      display: block;
+      padding: 13px 12px;
+      margin-bottom: 7px;
+      color: var(--muted);
+      border-radius: 9px;
+      font-size: 13px;
+    }
+
+    .nav-item.active,
+    .nav-item:hover {
+      background: #172a46;
+      color: #75b2ff;
+    }
+
+    .sidebar-footer {
+      margin-top: 65px;
+      padding: 15px 10px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    /* Main content */
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      padding: 32px;
+      max-width: 1500px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+      padding-bottom: 25px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar h1 {
+      font-size: 25px;
+      letter-spacing: -0.6px;
+    }
+
+    .topbar p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 7px;
+    }
+
+    .demo-badge {
+      color: #fbbf24;
+      background: #352b16;
+      border: 1px solid #66501e;
+      padding: 9px 13px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .welcome {
+      margin: 28px 0;
+    }
+
+    .welcome h2 {
+      font-size: 21px;
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Statistics cards */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 23px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 21px;
+    }
+
+    .card-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card-value {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .card-note {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .blue { color: #64a9ff; }
+    .green { color: var(--green); }
+    .yellow { color: #fbbf24; }
+
+    /* Dashboard grid */
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(260px, 1fr);
+      gap: 19px;
+    }
+
+    .section-heading {
+      font-size: 15px;
+      margin-bottom: 19px;
+    }
+
+    .map-panel {
+      min-height: 285px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+      background-color: #0c182b;
+      background-image:
+        linear-gradient(#20334e 1px, transparent 1px),
+        linear-gradient(90deg, #20334e 1px, transparent 1px);
+      background-size: 35px 35px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .map-symbol {
+      font-size: 38px;
+      margin-bottom: 15px;
+    }
+
+    .map-panel h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    .map-panel p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+      max-width: 300px;
+    }
+
+    /* Vehicle information */
+
+    .vehicle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 10px;
+    }
+
+    .vehicle-row:last-child {
+      border-bottom: none;
+    }
+
+    .vehicle-row span:first-child {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .vehicle-row span:last-child {
+      font-size: 12px;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--green);
+      font-size: 12px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .status.error {
+      color: var(--red);
+    }
+
+    .status.error .status-dot {
+      background: var(--red);
+    }
+
+    /* API panel */
+
+    .api-card {
+      margin-top: 19px;
+    }
+
+    .api-url {
+      background: #080f1d;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px;
+      color: #79b7ff;
+      font-family: monospace;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .api-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .button {
+      background: var(--blue);
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .button:hover {
+      background: #2377e5;
+    }
+
+    .button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .last-updated {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 30px;
+      padding-top: 20px;
+      color: var(--muted);
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Mobile responsive */
+
+    @media (max-width: 950px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .layout {
+        display: block;
+      }
+
+      .sidebar {
+        width: 100%;
+        padding: 15px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .brand {
+        margin-bottom: 14px;
+      }
+
+      .nav-label,
+      .sidebar-footer {
+        display: none;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 7px;
+        overflow-x: auto;
+      }
+
+      .nav-item {
+        white-space: nowrap;
+        padding: 10px;
+        margin: 0;
+      }
+
+      .main {
+        padding: 20px 14px;
+      }
+
+      .topbar h1 {
+        font-size: 21px;
+      }
+
+      .stats {
+        gap: 10px;
+      }
+
+      .card {
+        padding: 14px;
+      }
+
+      .card-value {
+        font-size: 19px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+
+    <div class="brand">
+      <div class="brand-logo">Y</div>
+      <div>
+        <h2>YUGANK TRACKER</h2>
+        <p>Vehicle Intelligence</p>
+      </div>
+    </div>
+
+    <p class="nav-label">WORKSPACE</p>
+
+    <nav class="nav-links">
+      <a class="nav-item active" href="#overview">Dashboard</a>
+      <a class="nav-item" href="#vehicle">Vehicle</a>
+      <a class="nav-item" href="#location">Location</a>
+      <a class="nav-item" href="#api">API Status</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <strong>Yugank Tracker</strong><br>
+      Version 0.1.0<br>
+      Development project
+    </div>
+
+  </aside>
+
+  <main class="main" id="overview">
+
+    <header class="topbar">
+      <div>
+        <h1>Dashboard Overview</h1>
+        <p>Vehicle monitoring and API information</p>
+      </div>
+
+      <div class="demo-badge">DEMO ENVIRONMENT</div>
+    </header>
+
+    <section class="welcome">
+      <h2>Welcome to Yugank Tracker</h2>
+      <p>Your vehicle dashboard is connected to the demo API.</p>
+    </section>
+
+    <section class="stats">
+
+      <article class="card">
+        <p class="card-label">API CONNECTION</p>
+        <div class="card-value blue" id="apiStatus">Checking...</div>
+        <p class="card-note">Backend availability</p>
+      </article>
+
+      <article class="card">
+        <p class="card-label">VEHICLE</p>
+        <div class="card-value" id="vehicleName">Loading...</div>
+        <p class="card-note">Registered demo vehicle</p>
+      </article>
+
+      <article class="card">
+        <p class="card-label">LOCATION</p>
+        <div class="card-value yellow" id="locationStatus">--</div>
+        <p class="card-note">GPS coordinates</p>
+      </article>
+
+      <article class="card">
+        <p class="card-label">SPEED</p>
+        <div class="card-value blue" id="vehicleSpeed">--</div>
+        <p class="card-note">Kilometres per hour</p>
+      </article>
+
+    </section>
+
+    <section class="dashboard-grid">
+
+      <article class="card" id="location">
+
+        <h3 class="section-heading">Location Overview</h3>
+
+        <div class="map-panel">
+          <div class="map-symbol">📍</div>
+          <h3>Map Integration Pending</h3>
+          <p id="mapMessage">
+            No GPS coordinates are available.
+            Connect an authorised GPS provider in a future version.
+          </p>
+        </div>
+
+      </article>
+
+      <article class="card" id="vehicle">
+
+        <h3 class="section-heading">Vehicle Information</h3>
+
+        <div class="vehicle-row">
+          <span>Vehicle name</span>
+          <span id="vehicleDetail">--</span>
+        </div>
+
+        <div class="vehicle-row">
+          <span>Vehicle ID</span>
+          <span id="vehicleId">--</span>
+        </div>
+
+        <div class="vehicle-row">
+          <span>Latitude</span>
+          <span id="latitude">--</span>
+        </div>
+
+        <div class="vehicle-row">
+          <span>Longitude</span>
+          <span id="longitude">--</span>
+        </div>
+
+        <div class="vehicle-row">
+          <span>Recorded time</span>
+          <span id="recordedAt">--</span>
+        </div>
+
+        <div class="vehicle-row">
+          <span>Mode</span>
+          <span class="yellow" id="mode">--</span>
+        </div>
+
+      </article>
+
+    </section>
+
+    <section class="card api-card" id="api">
+
+      <h3 class="section-heading">API Connection</h3>
+
+      <div class="api-url">
+        GET /api/location
+      </div>
+
+      <div class="api-actions">
+        <div>
+          <div class="status" id="connectionStatus">
+            <span class="status-dot"></span>
+            Connecting to API
+          </div>
+          <p class="last-updated" id="lastUpdated">
+            Waiting for response...
+          </p>
+        </div>
+
+        <button class="button" id="refreshButton"
+          onclick="loadData()">
+          Refresh Data
+        </button>
+      </div>
+
+    </section>
+
+    <footer>
+      <span>© 2026 Yugank Tracker</span>
+      <span>Learning project · Demo data only</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  function display(value) {
+    return value === null || value === undefined
+      ? "Not available"
+      : String(value);
+  }
+
+  async function loadData() {
+
+    const button = $("refreshButton");
+    const status = $("connectionStatus");
+
+    button.disabled = true;
+    button.textContent = "Loading...";
+
+    status.className = "status";
+    status.innerHTML =
+      '<span class="status-dot"></span>Connecting to API';
+
+    $("apiStatus").textContent = "Checking...";
+
+    try {
+
+      const response = await fetch("/api/location", {
+        method: "GET",
+        headers: {
+          "Accept": "application/json"
+        },
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        throw new Error("HTTP " + response.status);
+      }
+
+      const data = await response.json();
+
+      if (data.success !== true || data.isDemo !== true) {
+        throw new Error("Unexpected API response");
+      }
+
+      // API connection
+
+      $("apiStatus").textContent = "Online";
+      $("apiStatus").className = "card-value green";
+
+      status.className = "status";
+      status.innerHTML =
+        '<span class="status-dot"></span>API reachable';
+
+      // Vehicle information
+
+      $("vehicleName").textContent =
+        display(data.vehicle?.name);
+
+      $("vehicleDetail").textContent =
+        display(data.vehicle?.name);
+
+      $("vehicleId").textContent =
+        display(data.vehicle?.id);
+
+      // Location data
+
+      const lat = data.location?.latitude;
+      const lng = data.location?.longitude;
+
+      $("latitude").textContent = display(lat);
+      $("longitude").textContent = display(lng);
+
+      $("locationStatus").textContent =
+        lat == null || lng == null
+          ? "Unavailable"
+          : "Available";
+
+      $("mapMessage").textContent =
+        lat == null || lng == null
+          ? "GPS coordinates are not available. This is synthetic demo data."
+          : "Location coordinates received. Map integration is planned.";
+
+      // Telemetry
+
+      const speed = data.telemetry?.speedKph;
+
+      $("vehicleSpeed").textContent =
+        speed == null ? "-- km/h" : speed + " km/h";
+
+      $("recordedAt").textContent =
+        data.recordedAt
+          ? new Date(data.recordedAt).toLocaleString()
+          : "Not provided";
+
+      $("mode").textContent = display(data.mode);
+
+      // Last successful API response
+
+      $("lastUpdated").textContent =
+        "Last checked: " + new Date().toLocaleString();
+
+    } catch (error) {
+
+      $("apiStatus").textContent = "Offline";
+      $("apiStatus").className = "card-value";
+
+      status.className = "status error";
+      status.innerHTML =
+        '<span class="status-dot"></span>Connection failed';
+
+      $("lastUpdated").textContent =
+        "Could not load API data. Please retry.";
+
+      console.error("Yugank Tracker API:", error);
+
+    } finally {
+
+      button.disabled = false;
+      button.textContent = "Refresh Data";
+
+    }
+  }
+
+  // Load API data when the dashboard opens.
+
+  loadData();
+</script>
+
+</body>
+</html>
