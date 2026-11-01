@@ -10,7 +10,7 @@
   <rect width="64" height="64" rx="16" fill="url(#bg)"/>
 
   <path
-    d="M16 17 H48 V25 H36 V49 H28 V25 H16 Z"
+    d="M12 14 H23 L32 25 L41 14 H52 L36 34 V52 H28 V34 Z"
     fill="#FFFFFF"
   />
 </svg>
