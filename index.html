@@ -370,6 +370,102 @@
       gap: 10px;
     }
 
+/* Vehicle Analytics */
+
+.analytics-section {
+  margin-top: 28px;
+}
+
+.analytics-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 17px;
+}
+
+.analytics-heading h2 {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.analytics-heading p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.analytics-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.analytics-metric .card-value {
+  font-size: 24px;
+}
+
+.analytics-chart-card {
+  margin-top: 17px;
+}
+
+.chart-wrap {
+  width: 100%;
+  overflow: hidden;
+}
+
+.chart-wrap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.chart-grid line {
+  stroke: #26374f;
+  stroke-width: 1;
+}
+
+.chart-label {
+  fill: #94a3b8;
+  font-size: 12px;
+}
+
+.speed-area {
+  fill: url(#speedFill);
+}
+
+.speed-line {
+  fill: none;
+  stroke: #398bfa;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.speed-point {
+  fill: #60a5fa;
+  stroke: #101a2c;
+  stroke-width: 4;
+}
+
+.analytics-note {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 12px;
+}
+
+@media (max-width: 950px) {
+  .analytics-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .analytics-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
     /* Mobile responsive */
 
     @media (max-width: 950px) {
@@ -567,6 +663,116 @@
       </article>
 
     </section>
+
+<section class="analytics-section" id="analytics">
+
+  <div class="analytics-heading">
+    <div>
+      <h2>Vehicle Analytics</h2>
+      <p>Vehicle performance and speed overview</p>
+    </div>
+    <div class="demo-badge">SAMPLE DATA</div>
+  </div>
+
+  <div class="analytics-metrics">
+
+    <article class="card analytics-metric">
+      <p class="card-label">AVERAGE SPEED</p>
+      <div class="card-value blue">43.2 km/h</div>
+      <p class="card-note">Illustrative demo average</p>
+    </article>
+
+    <article class="card analytics-metric">
+      <p class="card-label">MAXIMUM SPEED</p>
+      <div class="card-value green">61 km/h</div>
+      <p class="card-note">Highest sample reading</p>
+    </article>
+
+    <article class="card analytics-metric">
+      <p class="card-label">TRIP DISTANCE</p>
+      <div class="card-value yellow">24.6 km</div>
+      <p class="card-note">Illustrative demo distance</p>
+    </article>
+
+  </div>
+
+  <article class="card analytics-chart-card">
+
+    <h3 class="section-heading">Speed History</h3>
+
+    <div class="chart-wrap">
+
+      <svg viewBox="0 0 720 250"
+        role="img"
+        aria-label="Illustrative demo speed readings from 9 AM to 2 PM">
+
+        <defs>
+          <linearGradient id="speedFill"
+            x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#398bfa"
+              stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#398bfa"
+              stop-opacity="0.02"/>
+          </linearGradient>
+        </defs>
+
+        <g class="chart-grid">
+          <line x1="60" y1="35" x2="680" y2="35"/>
+          <line x1="60" y1="75" x2="680" y2="75"/>
+          <line x1="60" y1="115" x2="680" y2="115"/>
+          <line x1="60" y1="155" x2="680" y2="155"/>
+          <line x1="60" y1="195" x2="680" y2="195"/>
+        </g>
+
+        <g class="chart-label">
+          <text x="15" y="39">80</text>
+          <text x="15" y="79">60</text>
+          <text x="15" y="119">40</text>
+          <text x="15" y="159">20</text>
+          <text x="15" y="199">0</text>
+
+          <text x="65" y="230">9 AM</text>
+          <text x="180" y="230">10 AM</text>
+          <text x="290" y="230">11 AM</text>
+          <text x="400" y="230">12 PM</text>
+          <text x="510" y="230">1 PM</text>
+          <text x="620" y="230">2 PM</text>
+        </g>
+
+        <path class="speed-area"
+          d="M 80 152
+             L 190 116
+             L 300 104
+             L 410 136
+             L 520 78
+             L 630 96
+             L 630 195
+             L 80 195 Z"/>
+
+        <polyline class="speed-line"
+          points="80,152 190,116 300,104 410,136 520,78 630,96"/>
+
+        <g>
+          <circle class="speed-point" cx="80" cy="152" r="6"/>
+          <circle class="speed-point" cx="190" cy="116" r="6"/>
+          <circle class="speed-point" cx="300" cy="104" r="6"/>
+          <circle class="speed-point" cx="410" cy="136" r="6"/>
+          <circle class="speed-point" cx="520" cy="78" r="6"/>
+          <circle class="speed-point" cx="630" cy="96" r="6"/>
+        </g>
+
+      </svg>
+
+    </div>
+
+    <p class="analytics-note">
+      Six illustrative sample readings. This chart does not
+      represent real-time GPS telemetry.
+    </p>
+
+  </article>
+
+</section>
 
     <section class="card api-card" id="api">
 
